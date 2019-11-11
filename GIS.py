@@ -56,34 +56,45 @@ print driver.title
 #loop infinito
 while True:
 	#cmdActiveReport
-	elem_botao = driver.find_element_by_name('cmdActiveReport')
+	try:
+		elem_botao = driver.find_element_by_name('cmdActiveReport')
+	except NoSuchElementException:
+		time.sleep(5)
+		driver.get('https://vpn.montepio.pt/+CSCO+00756767633A2F2F7367637A6261766762652E7A626167726376622E70627A++/')
+		WebDriverWait(driver, 10).until(EC.title_contains("FTPMonitor"))
+		continue
 	elem_botao.click()
 	now = datetime.datetime.now()
 	print "refresh efetuado " + str(now)[:19] #print str(now)[:19]
-	
+	#driver.execute_script("document.body.style.backgroundColor = 'red';")
+	#time.sleep(5)
+	#driver.execute_script("document.body.style.backgroundColor = 'white';")
 	#processos?
 	try:
 		elem_processos = driver.find_element_by_id('lbNoProcesses')
 	except NoSuchElementException:  #spelling error making this code not work as expected
 		print str(now)[:19] + " Existem ficheiros no GIS"
-		str_ini_ficheiro = driver.find_element_by_id("dgProcesses__ctl3_Label1").text #capturar a string dentro desta tag
-		print "Ficheiro no GIS desde" + str_ini_ficheiro
+		#str_ini_ficheiro = driver.find_element_by_id("dgProcesses__ctl3_Label1").text #capturar a string dentro desta tag
+		# A pedido do Elói foi alterado Label1 para Label2 porque diz que é para considerar datahora de fim do ficheiro por causa das mudanças de estado do ficheiro.
+		str_fim_ficheiro = driver.find_element_by_id("dgProcesses__ctl3_Label2").text #capturar a string dentro desta tag
+		print "Ficheiro no GIS desde " + str_fim_ficheiro
 		
 		"""
 			Calcular variacao de tempo
 		"""
 		
-		dt_ficheiro = datetime.datetime.strptime(str_ini_ficheiro, '%Y-%m-%d %H:%M:%S')
+		dt_ficheiro = datetime.datetime.strptime(str_fim_ficheiro, '%Y-%m-%d %H:%M:%S')
 		tdelta = now - dt_ficheiro
 		print "Passaram " + str(tdelta.total_seconds()) + " segundos"
 		
-		if tdelta.total_seconds() > 10*60:
+		if tdelta.total_seconds() > 20*60: #minutos * segundos
 			"""
 			Necessário alarme e popup
 			"""
 			playsound('beep-30.wav')
-			easygui.msgbox("Existe ficheiro preso no GIS  mais de 10 minutos, verifique!", title="GIS")
-		
+			driver.execute_script("document.body.style.backgroundColor = 'red';")
+			easygui.msgbox("Existe ficheiro preso no GIS  mais de 20 minutos, verifique!", title="GIS")
+			driver.execute_script("document.body.style.backgroundColor = 'white';")
 		#pass
 	#<span id="dgProcesses__ctl3_Label1" >2019-08-12 13:06:49</span>
 	time.sleep(60)
