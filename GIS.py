@@ -54,7 +54,7 @@ try:
 	easygui.msgbox(texto_para_msg, title="PASSWORD")
 	quit()
 except NoSuchElementException:
-	easygui.msgbox("PASSWORD OK")
+	#easygui.msgbox("PASSWORD OK")
 
 
 #aguardar nova pagina
