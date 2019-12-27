@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+PASSWORD = 'Tp5\'6s-7'
 # -*- coding: latin-1 -*-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -28,12 +30,32 @@ assert 'Montepio' in driver.title
 elem_u = driver.find_element_by_name('username')  # Find the usernme box
 elem_u.send_keys('Z0356')
 elem_p = driver.find_element_by_name('password')  # Find the usernme box
-elem_p.send_keys('x22tGQ<g' + Keys.RETURN)
+
+elem_p.send_keys(PASSWORD + Keys.RETURN)
 
 
 
 #esperar um pouco
 time.sleep(5)
+
+
+# Verificar se password expirou
+# Verificar se password expirou
+# Verificar se password expirou
+# Verificar se password expirou
+# Verificar se password expirou
+#<td nowrap="">New Password</td>
+#//*[@id="form_table"]/tbody/tr[3]/td/div/table/tbody/tr[2]/td[1]
+try:
+	#elem_botao = driver.find_element_by_name('cmdActiveReport')
+	#elem_td_expired = driver.find_element(By.XPATH, '//button[text()="Some text"]')
+	elem_td_expired = driver.find_element(By.XPATH, '//*[@id="form_table"]/tbody/tr[3]/td/div/table/tbody/tr[2]/td[text()="New Password"]')
+	texto_para_msg = "É necessário alterar a password para o user Z0356. A password atual é " + PASSWORD + "\nFaça a alteração agora, antes de clicar em OK neste popup e coloque a nova password no ficheiro GIS.py que se encontra no Desktop.\nEdite o ficheiro e substitua na terceira linha do ficheiro entre as plicas.\nDepois, volte a executar o GIS.py\nComunique essa alteração enviando mail para ptstf093@pt.ibm.com com a nova password."
+	easygui.msgbox(texto_para_msg, title="PASSWORD")
+	quit()
+except NoSuchElementException:
+	easygui.msgbox("PASSWORD OK")
+
 
 #aguardar nova pagina
 WebDriverWait(driver, 10).until(EC.title_contains("Montepio"))
