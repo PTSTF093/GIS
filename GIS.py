@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-PASSWORD = 'Tp5\'6s-7'
+PASSWORD = 'Tp5\'6s-8'
 # -*- coding: latin-1 -*-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -21,6 +21,7 @@ from playsound import playsound
 driver = webdriver.Firefox()
 
 #https://vpn.montepio.pt/+CSCOE+/portal.html
+
 driver.get('https://vpn.montepio.pt/+CSCOE+/logon.html')
 
 print driver.title
@@ -54,7 +55,7 @@ try:
 	easygui.msgbox(texto_para_msg, title="PASSWORD")
 	quit()
 except NoSuchElementException:
-	#easygui.msgbox("PASSWORD OK")
+	print "PASSWORD OK"
 
 
 #aguardar nova pagina
